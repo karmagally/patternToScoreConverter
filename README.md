@@ -6,8 +6,6 @@ Tools per l'analisi musicale e la conversione di dati MIDI in SuperCollider, con
 
 Strumenti per:
 - Conversione numeri MIDI in nomi di note con ottave
-- Sonificazione di materiale testuale
-- Sintesi audio con SynthDef personalizzati
 - Generazione di pattern musicali
 
 Esempio incluso: sonificazione di "L'Homme et la Mer" di Charles Baudelaire.
@@ -106,13 +104,12 @@ MIT License - Copyright (c) 2025 Simone De Benedetto
 
 # SuperCollider MIDI & Music Analysis Tools
 
-Tools for musical analysis and MIDI data conversion in SuperCollider, with poetic text sonification functions.
+Tools for musical analysis and MIDI data conversion in SuperCollider, with poetic text sonification example.
 
 ## Description
 
 Tools for:
 - Converting MIDI numbers to note names with octaves
-- Text material sonification
 - Audio synthesis with custom SynthDefs
 - Musical pattern generation
 
