@@ -63,16 +63,16 @@ FUNZIONE PRINCIPALE: CONVERSIONE MIDI -> NOMI NOTE
     // Stampa tutti i risultati
     result.printAll;
 };
-)
+);
 
 /*
 =============================================================================
-ESEMPIO PRATICO: ANALISI MELODICA DA "L'HOMME ET LA MER"
+ESEMPIO PRATICO: SONIFICAZIONE DA "L'HOMME ET LA MER" Charles Baudelaire
 =============================================================================
 */
 
 // DATI MUSICALI ESTRATTI
-// Array di frequenze in Hz derivate dall'analisi del testo poetico
+// Definizione Note Midi derivate dal testo poetico
 (
 ~arr = [
     113.41737891842, 120.91126929732, 120.59649079844, 120.59649079844, 119.27681669414,
@@ -97,39 +97,50 @@ SINTESI AUDIO: PATTERN PBIND
 */
 
 // CONFIGURAZIONE PATTERN AUDIO
-(
+
 /**
  * Pattern Pbind per la sintesi audio del materiale melodico
  *
  * Utilizza:
- * - Strumento: \SphShell (deve essere definito separatamente)
- * - Frequenze base derivate dall'array ~vers1_abs_1 (da definire)
- * - Modulazione di ottava casuale
  * - Ampiezza dinamica randomizzata
- * - Durate con micro-variazioni temporali
  * - Spazializzazione stereo casuale
  */
 
-//Definzione pattern Midi:
-~vers1_abs_1 = [72, 111, 109, 109, 101, 32, 108, 105, 98, 114, 101, 44, 32, 116, 111, 117, 106, 111, 117, 114, 115, 32, 116, 117, 32, 99, 104, 61, 87, 114, 105, 114, 97, 115, 32, 108, 97, 32, 109, 101, 114, 33, 32, 76, 97, 32, 109, 101, 114, 32, 101, 115, 116, 32, 116, 111, 110, 32, 109, 105, 114, 111, 105, 114, 59];
+//DEFINIZIONE SYNTHDEF
 
-~sheet1 = Pbind(
-    \instrument, \SphShell,                              // Strumento di sintesi
+(
+ SynthDef(\SphShell,
+	{arg n,baseFreq= 5088,pan=0.0,amp=1;
+		var freqRatios, sig, filter,stereo;
 
-    // CONTROLLO FREQUENZA
-    \baseFreq, Pseq((~arr.midicps.mirror), inf) /       // Pattern di frequenze base
-               Prand([2, 4, 8, 16, 32], inf),           // Divisori di ottava casuali
+		freqRatios =    [1 ,1.184 , 1.253 , 1.312];
 
-    // CONTROLLO DINAMICO
-    \amp, Pwhite(-12, -6).dbamp,                        // Ampiezza: da -48dB a -6dB
+		sig = Impulse.ar(0.001);
+		filter = Formlet.ar(sig,baseFreq * freqRatios,[1,1,1,1],[0.25,0.25,0.25,0.25],0.5);
+		stereo = Pan2.ar(Mix(filter)*amp, pan);
+		Out.ar(0, stereo);
+	}
+).add;
 
-    // CONTROLLO TEMPORALE
-    \dur, ~dur,                                      // Durate
-
-    // CONTROLLO SPAZIALE
-    \pan, Pwhite(-1.0, 1.0)                            // Posizione stereo casuale
+(
+ ~sheet1 = Pbind(
+	\instrument, \SphShell,                              // Strumento di sintesi
+	
+	// CONTROLLO FREQUENZA
+	\baseFreq, Pseq((~arr.midicps.mirror), inf) /       // Pattern di frequenze base
+	Prand([2, 4, 8, 16, 32], inf),           // Divisori di ottava casuali
+	
+	// CONTROLLO DINAMICO
+	\amp, Pwhite(-12, -6).dbamp,                        // Ampiezza: da -48dB a -6dB
+	
+	// CONTROLLO TEMPORALE
+	\dur, ~dur,                                      // Durate
+	
+	// CONTROLLO SPAZIALE
+	\pan, Pwhite(-1.0, 1.0)                            // Posizione stereo casuale
+));
 )
-)
+
 // esegui il pattern
 ~sheet1.play;
 
@@ -155,12 +166,10 @@ NOTE D'USO:
 =============================================================================
 
 1. Assicurati che lo strumento \SphShell sia definito prima dell'esecuzione
-2. Definisci la variabile ~vers1_abs_1 per il pattern audio
+2. Definisci la variabile ~arr per il pattern audio
 3. Usa .play sul Pbind per avviare la riproduzione:
    ~sheet1.play;
 
-4. Per fermare la riproduzione usa:
-   ~sheet1.stop;
 
 ESEMPI DI UTILIZZO RAPIDO:
 
