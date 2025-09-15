@@ -15,7 +15,7 @@ Esempio incluso: sonificazione di "L'Homme et la Mer" di Charles Baudelaire.
 **Prerequisiti**: SuperCollider 3.11+
 
 ```bash
-git clone https://github.com/username/supercollider-midi-tools.git
+git clone https://github.com/karmagally/supercollider-midi-tools.git
 ```
 
 Caricare in SuperCollider:
