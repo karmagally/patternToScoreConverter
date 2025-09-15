@@ -120,7 +120,7 @@ Included example: sonification of "L'Homme et la Mer" by Charles Baudelaire.
 **Requirements**: SuperCollider 3.11+
 
 ```bash
-git clone https://github.com/username/supercollider-midi-tools.git
+git clone https://github.com/karmagally/supercollider-midi-tools.git
 ```
 
 Load in SuperCollider:
