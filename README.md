@@ -33,7 +33,7 @@ Caricare in SuperCollider:
 // Output: "C5 1", "E5 2", "G5 4"
 
 // Scale cromatiche
-~midiArrayToNotes.value((60..71), Array.fill(12, 0.25));
+~midiArrayToNotes.value((60..71), Array.fill(12, 3));
 ```
 
 ### Sintesi Audio
